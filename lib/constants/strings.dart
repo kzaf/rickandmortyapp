@@ -4,4 +4,5 @@ class Strings {
   static String specificCharacterUrl ='https://rickandmortyapi.com/api/character/\$id';
   static String genericErrorMessage ='Something went wrong';
   static String connectionErrorMessage ='Connection issue';
+  static String fetchErrorMessage ='Failed to get data, please check your connection';
 }
