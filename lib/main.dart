@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rickandmortyapp/ui/home_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -9,12 +10,11 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Rick and Morty!')
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Rick and Morty',
+      theme: ThemeData.dark(),
+      home: const HomePage(),
     );
   }
 }
