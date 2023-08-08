@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rickandmortyapp/bloc/characters_bloc.dart';
+import 'package:rickandmortyapp/model/all_characters.dart';
 import 'package:rickandmortyapp/ui/widgets/home_page_list_view.dart';
 import 'package:rickandmortyapp/ui/widgets/loading_indicator.dart';
 
@@ -10,28 +11,22 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() => HomePageState();
+  State<HomePage> createState() {
+    return HomePageState();
+  }
 }
 
 class HomePageState extends State<HomePage> {
   final CharactersBloc charactersBloc = CharactersBloc();
   final ScrollController scrollController = ScrollController();
+  List<Results>? existingCharactersList = [];
+  String? nextPageUrl;
 
   @override
   void initState() {
     charactersBloc.add(GetAllCharactersList());
-    handleNext();
+    handleNextPage();
     super.initState();
-  }
-
-  void handleNext() {
-    scrollController.addListener(() async {
-      if(scrollController.position.maxScrollExtent == scrollController.position.pixels) {
-        print('next');
-      } else if (scrollController.position.minScrollExtent == scrollController.position.pixels) {
-        print('previous');
-      }
-    });
   }
 
   @override
@@ -43,6 +38,16 @@ class HomePageState extends State<HomePage> {
       ),
       body: allCharactersList()
     );
+  }
+
+  void handleNextPage() {
+    scrollController.addListener(() async {
+      if(scrollController.position.maxScrollExtent == scrollController.position.pixels) {
+        charactersBloc.add(GetAllCharactersListNext(nextPageUrl));
+      } else if (scrollController.position.minScrollExtent == scrollController.position.pixels) {
+        // charactersBloc.add(GetAllCharactersListPrevious());
+      }
+    });
   }
 
   Widget allCharactersList() {
@@ -60,9 +65,23 @@ class HomePageState extends State<HomePage> {
         },
         child: BlocBuilder<CharactersBloc, CharactersBlocState>(
           builder: (context, state) {
-            return state is CharactersBlocLoaded
-                ? HomePageListView(context, state.allCharacters, charactersBloc, scrollController)
-                : const LoadingIndicator();
+            if (state is CharactersBlocInitial) {
+              return const LoadingIndicator();
+            } else if (state is CharactersBlocLoading) {
+              return const LoadingIndicator();
+            } else if (state is CharactersBlocLoaded) {
+              nextPageUrl = state.allCharacters.info?.next;
+              existingCharactersList = state.allCharacters.results;
+              return HomePageListView(allCharacters: state.allCharacters.results, scrollController: scrollController);
+            } else if (state is CharactersBlocLoadingNext) {
+              return const LoadingIndicator(); // bottom loader
+            } else if (state is CharactersBlocLoadedNext) {
+              nextPageUrl = state.allCharacters.info?.next;
+              existingCharactersList?.addAll(state.allCharacters.results as Iterable<Results>);
+              return HomePageListView(allCharacters: existingCharactersList, scrollController: scrollController);
+            } else {
+              return const LoadingIndicator();
+            }
           },
         ),
     ),

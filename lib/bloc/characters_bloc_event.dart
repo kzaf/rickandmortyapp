@@ -9,3 +9,7 @@ sealed class CharactersBlocEvent extends Equatable{
 }
 
 class GetAllCharactersList extends CharactersBlocEvent {}
+class GetAllCharactersListNext extends CharactersBlocEvent {
+  final String? nextPageUrl;
+  const GetAllCharactersListNext(this.nextPageUrl);
+}

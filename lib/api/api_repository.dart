@@ -8,6 +8,10 @@ class ApiRepository {
     return provider.fetchAllCharacters();
   }
 
+  Future<AllCharacters> fetchAllCharactersListNextPage(String? nextPageUrl) {
+    return provider.fetchAllCharactersNextPage(nextPageUrl);
+  }
+
 }
 
 class NetworkError extends Error {}

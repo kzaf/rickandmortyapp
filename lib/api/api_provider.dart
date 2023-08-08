@@ -14,4 +14,18 @@ class ApiProvider {
     }
   }
 
+  Future<AllCharacters> fetchAllCharactersNextPage(String? nextPageUrl) async {
+    try {
+      String? urlNextPage = nextPageUrl;
+      if(urlNextPage != null) {
+        Response response = await dio.get(urlNextPage!);
+        return AllCharacters.fromJson(response.data);        
+      } else {
+        return AllCharacters.withError(Strings.connectionErrorMessage);
+      }
+    } catch (error) {
+      return AllCharacters.withError(Strings.connectionErrorMessage);
+    }
+  }
+
 }

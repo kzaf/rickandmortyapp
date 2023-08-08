@@ -16,15 +16,28 @@ class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
     on<GetAllCharactersList>((event, emit) async {
       try {
         emit(CharactersBlocLoading());
-        final allCharactersList = await apiRepository.fetchAllCharactersList();
-        emit(CharactersBlocLoaded(allCharactersList));
-        if (allCharactersList.error != null) {
-          emit(CharactersBlocError(allCharactersList.error));
+        final allCharacters = await apiRepository.fetchAllCharactersList();
+        emit(CharactersBlocLoaded(allCharacters));
+        if (allCharacters.error != null) {
+          emit(CharactersBlocError(allCharacters.error));
         }
       } on NetworkError {
         emit(CharactersBlocError(Strings.fetchErrorMessage));
       }
     });
 
+    on<GetAllCharactersListNext>((event, emit) async {
+      try {
+        emit(CharactersBlocLoadingNext());
+        final allCharacters = await apiRepository.fetchAllCharactersListNextPage(event.nextPageUrl);
+        emit(CharactersBlocLoadedNext(allCharacters));
+        if (allCharacters.error != null) {
+          emit(CharactersBlocError(allCharacters.error));
+        }
+      } on NetworkError {
+        emit(CharactersBlocError(Strings.fetchErrorMessage));
+      }
+    });
+    
   }
 }
