@@ -7,6 +7,7 @@ class ApiRepository {
   Future<AllCharacters> fetchAllCharactersList() {
     return provider.fetchAllCharacters();
   }
+
 }
 
 class NetworkError extends Error {}

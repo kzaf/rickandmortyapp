@@ -13,7 +13,7 @@ class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
   CharactersBloc() : super(CharactersBlocInitial()) {
     final ApiRepository apiRepository = ApiRepository();
 
-    on<CharactersBlocEvent>((event, emit) async {
+    on<GetAllCharactersList>((event, emit) async {
       try {
         emit(CharactersBlocLoading());
         final allCharactersList = await apiRepository.fetchAllCharactersList();
@@ -25,5 +25,6 @@ class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
         emit(CharactersBlocError(Strings.fetchErrorMessage));
       }
     });
+
   }
 }
