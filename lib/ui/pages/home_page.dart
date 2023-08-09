@@ -17,15 +17,15 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  final CharactersBloc charactersBloc = CharactersBloc();
-  final ScrollController scrollController = ScrollController();
-  List<Results>? existingCharactersList = [];
-  String? nextPageUrl;
+  final CharactersBloc _charactersBloc = CharactersBloc();
+  final ScrollController _scrollController = ScrollController();
+  final List<Results> _existingCharactersList = [];
+  String? _nextPageUrl = "";
 
   @override
   void initState() {
-    charactersBloc.add(GetAllCharactersList());
-    handleNextPage();
+    _charactersBloc.add(GetAllCharactersList(_existingCharactersList, _nextPageUrl));
+    _handleNextPage();
     super.initState();
   }
 
@@ -36,24 +36,22 @@ class HomePageState extends State<HomePage> {
         title: Text(Strings.homePageTitle),
         centerTitle: true,
       ),
-      body: allCharactersList()
+      body: _allCharactersList()
     );
   }
 
-  void handleNextPage() {
-    scrollController.addListener(() async {
-      if(scrollController.position.maxScrollExtent == scrollController.position.pixels) {
-        charactersBloc.add(GetAllCharactersListNext(nextPageUrl));
-      } else if (scrollController.position.minScrollExtent == scrollController.position.pixels) {
-        // charactersBloc.add(GetAllCharactersListPrevious());
+  void _handleNextPage() {
+    _scrollController.addListener(() async {
+      if(_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
+        _charactersBloc.add(GetAllCharactersList(_existingCharactersList, _nextPageUrl));
       }
     });
   }
 
-  Widget allCharactersList() {
+  Widget _allCharactersList() {
     return BlocProvider(
-      create: (context) => charactersBloc,
-      child: BlocListener<CharactersBloc, CharactersBlocState>(
+      create: (context) => _charactersBloc,
+      child: BlocConsumer<CharactersBloc, CharactersBlocState>(
         listener: (context, state) {
           if (state is CharactersBlocError) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -63,28 +61,22 @@ class HomePageState extends State<HomePage> {
             );
           }
         },
-        child: BlocBuilder<CharactersBloc, CharactersBlocState>(
           builder: (context, state) {
             if (state is CharactersBlocInitial) {
               return const LoadingIndicator();
             } else if (state is CharactersBlocLoading) {
               return const LoadingIndicator();
             } else if (state is CharactersBlocLoaded) {
-              nextPageUrl = state.allCharacters.info?.next;
-              existingCharactersList = state.allCharacters.results;
-              return HomePageListView(allCharacters: state.allCharacters.results, scrollController: scrollController);
-            } else if (state is CharactersBlocLoadingNext) {
-              return const LoadingIndicator(); // bottom loader
-            } else if (state is CharactersBlocLoadedNext) {
-              nextPageUrl = state.allCharacters.info?.next;
-              existingCharactersList?.addAll(state.allCharacters.results as Iterable<Results>);
-              return HomePageListView(allCharacters: existingCharactersList, scrollController: scrollController);
-            } else {
+              _nextPageUrl = state.nextPageUrl;
+              return HomePageListView(
+                  allCharacters: state.allCharacters,
+                  scrollController: _scrollController
+              );
+            }else {
               return const LoadingIndicator();
             }
           },
-        ),
-    ),
+      ),
     );
   } 
 }

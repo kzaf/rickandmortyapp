@@ -14,15 +14,9 @@ final class CharactersBlocInitial extends CharactersBlocState {}
 final class CharactersBlocLoading extends CharactersBlocState {}
 
 final class CharactersBlocLoaded extends CharactersBlocState {
-  final AllCharacters allCharacters;
-  const CharactersBlocLoaded(this.allCharacters);
-}
-
-final class CharactersBlocLoadingNext extends CharactersBlocState {}
-
-final class CharactersBlocLoadedNext extends CharactersBlocState {
-  final AllCharacters allCharacters;
-  const CharactersBlocLoadedNext(this.allCharacters);
+  final List<Results>? allCharacters;
+  final String? nextPageUrl;
+  const CharactersBlocLoaded(this.allCharacters, this.nextPageUrl);
 }
 
 final class CharactersBlocError extends CharactersBlocState {

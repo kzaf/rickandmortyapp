@@ -4,12 +4,8 @@ import 'api_provider.dart';
 class ApiRepository {
   final provider = ApiProvider();
 
-  Future<AllCharacters> fetchAllCharactersList() {
-    return provider.fetchAllCharacters();
-  }
-
-  Future<AllCharacters> fetchAllCharactersListNextPage(String? nextPageUrl) {
-    return provider.fetchAllCharactersNextPage(nextPageUrl);
+  Future<AllCharacters> fetchCharacters(String? nextPageUrl) {
+    return provider.fetchCharacters(nextPageUrl);
   }
 
 }

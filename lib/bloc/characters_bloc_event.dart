@@ -8,8 +8,8 @@ sealed class CharactersBlocEvent extends Equatable{
   List<Object> get props => [];
 }
 
-class GetAllCharactersList extends CharactersBlocEvent {}
-class GetAllCharactersListNext extends CharactersBlocEvent {
+class GetAllCharactersList extends CharactersBlocEvent {
+  final List<Results>? existingList;
   final String? nextPageUrl;
-  const GetAllCharactersListNext(this.nextPageUrl);
+  const GetAllCharactersList(this.existingList, this.nextPageUrl);
 }

@@ -21,6 +21,11 @@ class HomePageListView extends StatelessWidget {
             leading: ClipRRect(child: Image.network("${allCharacters?[index]?.image}")),
             title: Text("${allCharacters?[index]?.name}"),
             subtitle: Text("${allCharacters?[index]?.status}"),
+            onTap: () {
+              ScaffoldMessenger
+                .of(context)
+                .showSnackBar(SnackBar(content: Text('$index')));
+            },
           ),
         ),
     );
