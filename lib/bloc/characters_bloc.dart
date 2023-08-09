@@ -18,8 +18,9 @@ class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
         emit(CharactersBlocLoading());
 
         final AllCharacters fetchedCharacters = await apiRepository.fetchCharacters(event.nextPageUrl);
-        event.existingList?.addAll(fetchedCharacters.results as Iterable<Results>);
-
+        if(fetchedCharacters.results != null) {
+          event.existingList?.addAll(fetchedCharacters.results as Iterable<Results>);
+        }
         emit(CharactersBlocLoaded(event.existingList, fetchedCharacters.info?.next));
 
         if (fetchedCharacters.error != null) {

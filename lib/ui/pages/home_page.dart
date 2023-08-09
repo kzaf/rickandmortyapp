@@ -65,12 +65,17 @@ class HomePageState extends State<HomePage> {
             if (state is CharactersBlocInitial) {
               return const LoadingIndicator();
             } else if (state is CharactersBlocLoading) {
-              return const LoadingIndicator();
+              return HomePageListView(
+                  allCharacters: _existingCharactersList,
+                  scrollController: _scrollController, 
+                  showLoader: true
+              );
             } else if (state is CharactersBlocLoaded) {
               _nextPageUrl = state.nextPageUrl;
               return HomePageListView(
                   allCharacters: state.allCharacters,
-                  scrollController: _scrollController
+                  scrollController: _scrollController, 
+                  showLoader: false
               );
             }else {
               return const LoadingIndicator();
