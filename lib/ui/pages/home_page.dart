@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rickandmortyapp/bloc/characters_bloc.dart';
 import 'package:rickandmortyapp/model/all_characters.dart';
 import 'package:rickandmortyapp/ui/widgets/home_page_list_view.dart';
 import 'package:rickandmortyapp/ui/widgets/loading_indicator.dart';
 
+import '../../bloc/home_page_bloc/characters_bloc.dart';
 import '../../constants/strings.dart';
 
 class HomePage extends StatefulWidget {

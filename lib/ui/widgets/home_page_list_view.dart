@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:rickandmortyapp/model/all_characters.dart';
+import 'package:rickandmortyapp/ui/pages/details_page.dart';
 import 'package:rickandmortyapp/ui/widgets/loading_indicator.dart';
 
 class HomePageListView extends StatelessWidget {
+  final ScrollController scrollController;
+  final List<Results?>? allCharacters;
+  final bool showLoader;
+
   const HomePageListView({
     super.key,
     required this.allCharacters,
     required this.scrollController,
     required this.showLoader
   });
-
-  final ScrollController scrollController;
-  final List<Results?>? allCharacters;
-  final bool showLoader;
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +36,14 @@ class HomePageListView extends StatelessWidget {
         title: Text("${allCharacters?[index]?.name}"),
         subtitle: Text("${allCharacters?[index]?.status}"),
         onTap: () {
-          ScaffoldMessenger
-            .of(context)
-            .showSnackBar(SnackBar(content: Text('$index')));
+          Navigator.push(
+            context, 
+            MaterialPageRoute(
+              builder: (BuildContext context) { 
+                return DetailsPage(index: index); 
+              }
+            )
+          );
         },
       ),
     );
