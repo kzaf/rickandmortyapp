@@ -39,9 +39,7 @@ class HomePageListView extends StatelessWidget {
           Navigator.push(
             context, 
             MaterialPageRoute(
-              builder: (BuildContext context) { 
-                return DetailsPage(index: index); 
-              }
+              builder: (BuildContext context) => DetailsPage(index: index)
             )
           );
         },

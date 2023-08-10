@@ -6,8 +6,8 @@ import 'package:rickandmortyapp/model/all_characters.dart';
 
 import '../../constants/strings.dart';
 
-part 'characters_bloc_event.dart';
-part 'characters_bloc_state.dart';
+part 'home_bloc_event.dart';
+part 'home_bloc_state.dart';
 
 class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
   CharactersBloc() : super(CharactersBlocInitial()) {

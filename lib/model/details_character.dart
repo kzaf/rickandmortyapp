@@ -11,6 +11,7 @@ class DetailsCharacter {
   List<String>? episode;
   String? url;
   String? created;
+  String? error;
 
   DetailsCharacter(
       {this.id,
@@ -24,7 +25,12 @@ class DetailsCharacter {
       this.image,
       this.episode,
       this.url,
-      this.created});
+      this.created}
+  );
+  
+  DetailsCharacter.withError(String errorMessage) {
+    error = errorMessage;
+  }
 
   DetailsCharacter.fromJson(Map<String, dynamic> json) {
     id = json['id'];

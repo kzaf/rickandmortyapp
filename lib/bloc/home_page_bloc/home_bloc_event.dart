@@ -1,4 +1,4 @@
-part of 'characters_bloc.dart';
+part of 'home_bloc.dart';
 
 @immutable
 sealed class CharactersBlocEvent extends Equatable{

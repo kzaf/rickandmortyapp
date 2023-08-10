@@ -4,16 +4,14 @@ import 'package:rickandmortyapp/model/all_characters.dart';
 import 'package:rickandmortyapp/ui/widgets/home_page_list_view.dart';
 import 'package:rickandmortyapp/ui/widgets/loading_indicator.dart';
 
-import '../../bloc/home_page_bloc/characters_bloc.dart';
+import '../../bloc/home_page_bloc/home_bloc.dart';
 import '../../constants/strings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
-  State<HomePage> createState() {
-    return HomePageState();
-  }
+  State<HomePage> createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePage> {
