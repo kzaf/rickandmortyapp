@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:rickandmortyapp/model/all_characters.dart';
+import 'package:rickandmortyapp/api/model/all_characters.dart';
+import 'package:rickandmortyapp/ui/ui_model/home_list_item.dart';
 import 'package:rickandmortyapp/ui/pages/details_page.dart';
 import 'package:rickandmortyapp/ui/widgets/loading_indicator.dart';
 
 class HomePageListView extends StatelessWidget {
   final ScrollController scrollController;
-  final List<Results?>? allCharacters;
+  final List<HomeListItem?>? allCharacters;
   final bool showLoader;
 
   const HomePageListView({
@@ -34,7 +35,14 @@ class HomePageListView extends StatelessWidget {
       child: ListTile(
         leading: ClipRRect(child: Image.network("${allCharacters?[index]?.image}")),
         title: Text("${allCharacters?[index]?.name}"),
-        subtitle: Text("${allCharacters?[index]?.status}"),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("${allCharacters?[index]?.status} - ${allCharacters?[index]?.species}"),
+            Text("Last seen: ${allCharacters?[index]?.lastLocation}"),
+            Text("First seen: ${allCharacters?[index]?.firstLocation}")
+          ],
+        ),
         onTap: () {
           Navigator.push(
             context, 

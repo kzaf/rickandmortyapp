@@ -4,7 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:rickandmortyapp/api/api_repository.dart';
 
 import '../../constants/strings.dart';
-import '../../model/details_character.dart';
+import '../../api/model/details_character.dart';
 
 part 'details_bloc_event.dart';
 part 'details_bloc_state.dart';
