@@ -6,8 +6,9 @@ import '../widgets/loading_indicator.dart';
 
 class DetailsPage extends StatefulWidget {
   final int index;
+  final String? name;
 
-  const DetailsPage({required this.index, super.key});
+  const DetailsPage({required this.index, required this.name, super.key});
 
   @override
   State<DetailsPage> createState() => _DetailsPageState();
@@ -27,7 +28,7 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.index}"),
+        title: Text(widget.name ?? ''),
         centerTitle: true,
       ),
       body: BlocProvider(

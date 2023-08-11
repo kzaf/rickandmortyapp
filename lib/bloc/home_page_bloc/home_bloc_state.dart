@@ -14,7 +14,7 @@ final class CharactersBlocInitial extends CharactersBlocState {}
 final class CharactersBlocLoading extends CharactersBlocState {}
 
 final class CharactersBlocLoaded extends CharactersBlocState {
-  final List<HomeListItem>? allCharacters;
+  final List<HomeListItem> allCharacters;
   final String? nextPageUrl;
   const CharactersBlocLoaded(this.allCharacters, this.nextPageUrl);
 }

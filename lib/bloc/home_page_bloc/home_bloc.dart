@@ -20,25 +20,26 @@ class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
         emit(CharactersBlocLoading());
         
         final AllCharacters fetchedCharacters = await apiRepository.fetchCharacters(event.nextPageUrl);
-        List<HomeListItem>? homeListItems = fetchedCharacters.results?.map((element) {
+        List<HomeListItem>? homeListItems = fetchedCharacters.results?.map((character) {
           return HomeListItem(
-            name: element.name,
-            status: element.status,
-            species: element.species,
-            lastLocation: element.location?.name,
-            firstLocation: element.episode?.first,
-            image: element.image,
+            name: character.name,
+            status: character.status,
+            species: character.species,
+            lastLocation: character.location?.name,
+            firstLocation: character.episode?.first,
+            image: character.image,
           );
-        }).toList();
+        }).toList() ?? [];
 
-        await Future.forEach(homeListItems as Iterable<HomeListItem?>, (homeListItem) async {
-          final Episode episode = await apiRepository.fetchEpisodeDetails(homeListItem?.firstLocation);
-          homeListItem?.firstLocation = episode.name;
-        });
+        for(var homeListItem in homeListItems) {
+          final Episode episode = await apiRepository.fetchEpisodeDetails(homeListItem.firstLocation);
+          homeListItem.firstLocation = episode.name;
+        }
 
         if(fetchedCharacters.results != null) {
-          event.existingList?.addAll(homeListItems as Iterable<HomeListItem>);
+          event.existingList.addAll(homeListItems);
         }
+        
         emit(CharactersBlocLoaded(event.existingList, fetchedCharacters.info?.next));
 
         if (fetchedCharacters.error != null) {

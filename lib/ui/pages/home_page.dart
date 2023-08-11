@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rickandmortyapp/api/model/all_characters.dart';
 import 'package:rickandmortyapp/ui/ui_model/home_list_item.dart';
 import 'package:rickandmortyapp/ui/widgets/home_page_list_view.dart';
 import 'package:rickandmortyapp/ui/widgets/loading_indicator.dart';
@@ -19,7 +18,8 @@ class HomePageState extends State<HomePage> {
   final CharactersBloc _charactersBloc = CharactersBloc();
   final ScrollController _scrollController = ScrollController();
   final List<HomeListItem> _existingCharactersList = [];
-  String? _nextPageUrl = "";
+  String? _nextPageUrl = '';
+  bool _shouldLoadNext = true;
 
   @override
   void initState() {
@@ -42,7 +42,9 @@ class HomePageState extends State<HomePage> {
   void _handleNextPage() {
     _scrollController.addListener(() async {
       if(_scrollController.position.maxScrollExtent == _scrollController.position.pixels) {
-        _charactersBloc.add(GetAllCharactersList(_existingCharactersList, _nextPageUrl));
+        if(_shouldLoadNext){
+          _charactersBloc.add(GetAllCharactersList(_existingCharactersList, _nextPageUrl));
+        }
       }
     });
   }
@@ -64,17 +66,21 @@ class HomePageState extends State<HomePage> {
             if (state is CharactersBlocInitial) {
               return const LoadingIndicator();
             } else if (state is CharactersBlocLoading) {
+              _shouldLoadNext = false;
               return HomePageListView(
                   allCharacters: _existingCharactersList,
                   scrollController: _scrollController, 
-                  showLoader: true
+                  showLoader: true,
+                  nextPageUrl: _nextPageUrl
               );
             } else if (state is CharactersBlocLoaded) {
+              _shouldLoadNext = true;
               _nextPageUrl = state.nextPageUrl;
               return HomePageListView(
                   allCharacters: state.allCharacters,
                   scrollController: _scrollController, 
-                  showLoader: false
+                  showLoader: false,
+                  nextPageUrl: _nextPageUrl,
               );
             }else {
               return const LoadingIndicator();
