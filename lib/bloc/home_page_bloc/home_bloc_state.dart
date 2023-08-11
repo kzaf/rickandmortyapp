@@ -20,6 +20,6 @@ final class CharactersBlocLoaded extends CharactersBlocState {
 }
 
 final class CharactersBlocError extends CharactersBlocState {
-  final String? message;
+  final String message;
   const CharactersBlocError(this.message);
 }

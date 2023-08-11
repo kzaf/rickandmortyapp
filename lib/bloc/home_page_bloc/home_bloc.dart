@@ -25,8 +25,8 @@ class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
             name: character.name,
             status: character.status,
             species: character.species,
-            lastLocation: character.location?.name,
-            firstLocation: character.episode?.first,
+            lastLocation: character.location?.name ?? Strings.unknown,
+            firstLocation: character.episode?.first ?? Strings.unknown,
             image: character.image,
           );
         }).toList() ?? [];
@@ -43,7 +43,7 @@ class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
         emit(CharactersBlocLoaded(event.existingList, fetchedCharacters.info?.next));
 
         if (fetchedCharacters.error != null) {
-          emit(CharactersBlocError(fetchedCharacters.error));
+          emit(CharactersBlocError(fetchedCharacters.error ?? Strings.genericErrorMessage));
         }
 
       } on NetworkError {

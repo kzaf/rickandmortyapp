@@ -6,4 +6,12 @@ class Strings {
   static String genericErrorMessage ='Something went wrong';
   static String connectionErrorMessage ='Connection issue';
   static String fetchErrorMessage ='Failed to get data, please check your connection';
+
+  static String emptyString ='';
+  static String unknown ='Unknown';
+
+  static String deadStatus ='Dead';
+  static String aliveStatus ='Alive';
+  static String lastKnownLocationLabel ='Last known location:';
+  static String firstSeenInLabel ='First seen in:';
 }

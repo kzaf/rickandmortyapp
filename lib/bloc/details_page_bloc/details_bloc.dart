@@ -22,7 +22,7 @@ class DetailsBloc extends Bloc<DetailsBlocEvent, DetailsBlocState> {
         emit(DetailsBlocLoaded(fetchedCharacterDetails));
 
         if (fetchedCharacterDetails.error != null) {
-          emit(DetailsBlocError(fetchedCharacterDetails.error));
+          emit(DetailsBlocError(fetchedCharacterDetails.error ?? Strings.genericErrorMessage));
         }
 
       } on NetworkError {

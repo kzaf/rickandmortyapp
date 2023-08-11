@@ -19,6 +19,6 @@ final class DetailsBlocLoaded extends DetailsBlocState {
 }
 
 final class DetailsBlocError extends DetailsBlocState {
-  final String? message;
+  final String message;
   const DetailsBlocError(this.message);
 }
