@@ -49,10 +49,10 @@ class _DetailsPageState extends State<DetailsPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(state.characterDetails.name ?? Strings.emptyString, style: AppTextStyle.headlineDetails),
+                      Text(state.characterDetails.name, style: AppTextStyle.headlineDetails),
                       Container(
-                        margin: EdgeInsets.only(top: Dimensions.detailsPageTitleMargin, bottom: Dimensions.detailsPageTitleMargin),
-                        child: Image.network(state.characterDetails.image ?? Strings.emptyString),
+                        margin: EdgeInsets.all(Dimensions.detailsPageTitleMargin),
+                        child: Image.network(state.characterDetails.image),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -70,9 +70,38 @@ class _DetailsPageState extends State<DetailsPage> {
                             ),
                           ),
                           SizedBox(width: Dimensions.detailsPageStatusSizedBoxWidth),
-                          Text('${state.characterDetails.status}', style: AppTextStyle.titleDetails),
+                          Text(state.characterDetails.status.capitalize(), style: AppTextStyle.titleDetails),
                         ],
                       ),
+                      SizedBox(height:20),
+                      Text('Gender', style: AppTextStyle.captionDetails),
+                      Text(state.characterDetails.gender, style: AppTextStyle.titleDetails),
+                      SizedBox(height:10),
+
+                      Text('Species', style: AppTextStyle.captionDetails),
+                      Text(state.characterDetails.species, style: AppTextStyle.titleDetails),
+                      SizedBox(height:10),
+
+                      Text('Last known location', style: AppTextStyle.captionDetails),
+                      Text(state.characterDetails.locationName, style: AppTextStyle.titleDetails),
+                      SizedBox(height:10),
+
+                      Text('Origin', style: AppTextStyle.captionDetails),
+                      Text(state.characterDetails.originName, style: AppTextStyle.titleDetails),
+                      SizedBox(height:10),
+
+                      Text('Number of episodes', style: AppTextStyle.captionDetails),
+                      Text('${state.characterDetails.episodes.length}', style: AppTextStyle.titleDetails),
+                      SizedBox(height:10),
+                      
+                      ExpansionTile(
+                        title: Text('Episodes'),
+                        children: state.characterDetails.episodes.map((item) {
+                          return ListTile(
+                            title: Text(item),
+                          );
+                        }).toList(),
+                      )
                     ],
                   ),
                 ),

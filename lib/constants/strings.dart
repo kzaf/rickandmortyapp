@@ -9,9 +9,16 @@ class Strings {
 
   static String emptyString ='';
   static String unknown ='Unknown';
+  static String imageNotFound ='https://rickandmortyapi.com/api/character/avatar/19.jpeg';
 
   static String deadStatus ='Dead';
   static String aliveStatus ='Alive';
   static String lastKnownLocationLabel ='Last known location:';
   static String firstSeenInLabel ='First seen in:';
+}
+
+extension StringExtensions on String {
+  String capitalize() {
+    return "${this[0].toUpperCase()}${substring(1)}";
+  }
 }

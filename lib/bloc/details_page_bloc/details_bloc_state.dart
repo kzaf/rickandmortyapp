@@ -14,7 +14,7 @@ final class DetailsBlocInitial extends DetailsBlocState {}
 final class DetailsBlocLoading extends DetailsBlocState {}
 
 final class DetailsBlocLoaded extends DetailsBlocState {
-  final DetailsCharacter characterDetails;
+  final DetailsItem characterDetails;
   const DetailsBlocLoaded(this.characterDetails);
 }
 

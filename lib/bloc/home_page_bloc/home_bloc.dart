@@ -22,18 +22,18 @@ class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
         final AllCharacters fetchedCharacters = await apiRepository.fetchCharacters(event.nextPageUrl);
         List<HomeListItem>? homeListItems = fetchedCharacters.results?.map((character) {
           return HomeListItem(
-            name: character.name,
-            status: character.status,
-            species: character.species,
+            name: character.name ?? Strings.unknown,
+            status: character.status ?? Strings.unknown,
+            species: character.species ?? Strings.unknown,
             lastLocation: character.location?.name ?? Strings.unknown,
             firstLocation: character.episode?.first ?? Strings.unknown,
-            image: character.image,
+            image: character.image ?? Strings.imageNotFound,
           );
         }).toList() ?? [];
 
         for(var homeListItem in homeListItems) {
           final Episode episode = await apiRepository.fetchEpisodeDetails(homeListItem.firstLocation);
-          homeListItem.firstLocation = episode.name;
+          homeListItem.firstLocation = episode.name ?? Strings.unknown;
         }
 
         if(fetchedCharacters.results != null) {

@@ -46,7 +46,7 @@ class HomePageListView extends StatelessWidget {
         top: Dimensions.homePageListItemCardMargin
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5),
+        borderRadius: BorderRadius.circular(Dimensions.homePageListItemCardRadius),
       ),
       child: InkWell(
         onTap: () {
@@ -59,6 +59,7 @@ class HomePageListView extends StatelessWidget {
         },
         child: Row(
           children: <Widget> [
+
             Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
@@ -68,23 +69,25 @@ class HomePageListView extends StatelessWidget {
                     bottomLeft: Radius.circular(Dimensions.homePageListItemCardIconRadius)
                   ),
                   child: Image.network(
-                    "${allCharacters[index].image}",
+                    allCharacters[index].image,
                     width: Dimensions.homePageListItemCardIconSize, 
                     height: Dimensions.homePageListItemCardIconSize
                   ),
                 ),
               ],
             ),
-            SizedBox(width: Dimensions.homePageListItemCardSizedBoxWidth),
+            SizedBox(width: Dimensions.homePageListItemSizedBoxWidth),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text("${allCharacters[index].name}", style: AppTextStyle.listHomeItemTitle)
+                    Text(allCharacters[index].name, style: AppTextStyle.listHomeItemTitle)
                   ],
                 ),
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
@@ -100,24 +103,30 @@ class HomePageListView extends StatelessWidget {
                                 : Colors.grey,
                       ),
                     ),
-                    SizedBox(width: Dimensions.homePageListItemCardSizedBoxWidth),
-                    Text("${allCharacters[index].status} - ${allCharacters[index].species}"),
+                    SizedBox(width: Dimensions.homePageListItemSizedBoxWidth),
+                    Text("${allCharacters[index].status.capitalize()} - ${allCharacters[index].species}", style: AppTextStyle.listHomeItemText),
                   ],
                 ),
+                SizedBox(height: Dimensions.homePageListItemSizedBoxWidth),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(Strings.lastKnownLocationLabel, style: AppTextStyle.listHomeItemLabel),
-                    Text("${allCharacters[index].lastLocation}", style: AppTextStyle.listHomeItemText),
+                    Text(allCharacters[index].lastLocation, style: AppTextStyle.listHomeItemText),
                   ],
                 ),
+                SizedBox(height: Dimensions.homePageListItemSizedBoxWidth),
+
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(Strings.firstSeenInLabel, style: AppTextStyle.listHomeItemLabel),
-                    Text("${allCharacters[index].firstLocation}", style: AppTextStyle.listHomeItemText)
+                    Text(allCharacters[index].firstLocation, style: AppTextStyle.listHomeItemText)
                   ],
                 ),
+                SizedBox(height: Dimensions.homePageListItemSizedBoxWidth),
+
               ],
             ),
           ],
