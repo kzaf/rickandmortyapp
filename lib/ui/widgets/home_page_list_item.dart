@@ -26,19 +26,22 @@ class HomePageListView extends StatelessWidget {
     return ListView.builder(
       key: const PageStorageKey(0),
       controller: scrollController,
-      itemCount: allCharacters.length + (showLoader ? 1 : 0),
+      itemCount: allCharacters.length + 1,
       itemBuilder: (context, index) {
         return 
         nextPageUrl != null
           ? index >= allCharacters.length
-              ? const LoadingIndicator()
+              ? Padding(
+                padding: EdgeInsets.all(Dimensions.homePageListItemLoaderPadding),
+                child: const LoadingIndicator(),
+              )
               : _buildDataListItem(context, index)
-          : _buildDataListItemEmpty(context, index);
+          : const SizedBox();
       },
     );
   }
 
-  Widget _buildDataListItem(context, index) {
+  Card _buildDataListItem(context, index) {
     return Card(
       margin: EdgeInsets.only(
         left: Dimensions.homePageListItemCardMargin,
@@ -59,74 +62,19 @@ class HomePageListView extends StatelessWidget {
         },
         child: Row(
           children: <Widget> [
-
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(Dimensions.homePageListItemCardIconRadius), 
-                    bottomLeft: Radius.circular(Dimensions.homePageListItemCardIconRadius)
-                  ),
-                  child: Image.network(
-                    allCharacters[index].image,
-                    width: Dimensions.homePageListItemCardIconSize, 
-                    height: Dimensions.homePageListItemCardIconSize
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(width: Dimensions.homePageListItemSizedBoxWidth),
-
+            _listItemImage(index),
+            SizedBox(width: Dimensions.homePageListItemSizedBoxHeight),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(allCharacters[index].name, style: AppTextStyle.listHomeItemTitle)
-                  ],
-                ),
-                
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: Dimensions.homePageListItemSize,
-                      width: Dimensions.homePageListItemSize,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(Dimensions.homePageListItemCardStatusDecorationBorderRadius),
-                        color: allCharacters[index].status == Strings.aliveStatus
-                            ? Colors.green
-                            : allCharacters[index].status == Strings.deadStatus
-                                ? Colors.red
-                                : Colors.grey,
-                      ),
-                    ),
-                    SizedBox(width: Dimensions.homePageListItemSizedBoxWidth),
-                    Text("${allCharacters[index].status.capitalize()} - ${allCharacters[index].species}", style: AppTextStyle.listHomeItemText),
-                  ],
-                ),
-                SizedBox(height: Dimensions.homePageListItemSizedBoxWidth),
+                _listItemNameAndStatus(index),
+                SizedBox(height: Dimensions.homePageListItemSizedBoxHeight),
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(Strings.lastKnownLocationLabel, style: AppTextStyle.listHomeItemLabel),
-                    Text(allCharacters[index].lastLocation, style: AppTextStyle.listHomeItemText),
-                  ],
-                ),
-                SizedBox(height: Dimensions.homePageListItemSizedBoxWidth),
+                _listItemLastLocation(index),
+                SizedBox(height: Dimensions.homePageListItemSizedBoxHeight),
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(Strings.firstSeenInLabel, style: AppTextStyle.listHomeItemLabel),
-                    Text(allCharacters[index].firstLocation, style: AppTextStyle.listHomeItemText)
-                  ],
-                ),
-                SizedBox(height: Dimensions.homePageListItemSizedBoxWidth),
-
+                _listItemFirstSeen(index),
+                SizedBox(height: Dimensions.homePageListItemSizedBoxHeight),
               ],
             ),
           ],
@@ -135,7 +83,71 @@ class HomePageListView extends StatelessWidget {
     );
   }
 
-  Widget _buildDataListItemEmpty(context, index) {
-    return const Card();
+  Column _listItemImage(index) {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: <Widget>[
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(Dimensions.homePageListItemCardIconRadius), 
+            bottomLeft: Radius.circular(Dimensions.homePageListItemCardIconRadius)
+          ),
+          child: Image.network(
+            allCharacters[index].image,
+            width: Dimensions.homePageListItemCardIconSize, 
+            height: Dimensions.homePageListItemCardIconSize
+          ),
+        ),
+      ],
+    );
   }
+
+  Column _listItemNameAndStatus(index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(allCharacters[index].name, style: AppTextStyle.listHomeItemTitle),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              height: Dimensions.homePageListItemSize,
+              width: Dimensions.homePageListItemSize,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(Dimensions.homePageListItemCardStatusDecorationBorderRadius),
+                color: allCharacters[index].status == Strings.aliveStatus
+                    ? Colors.green
+                    : allCharacters[index].status == Strings.deadStatus
+                        ? Colors.red
+                        : Colors.grey,
+              ),
+            ),
+            SizedBox(width: Dimensions.homePageListItemSizedBoxWidth),
+            Text("${allCharacters[index].status.capitalize()} - ${allCharacters[index].species}", style: AppTextStyle.listHomeItemText),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Column _listItemLastLocation(index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(Strings.lastKnownLocationLabel, style: AppTextStyle.listHomeItemLabel),
+        Text(allCharacters[index].lastLocation, style: AppTextStyle.listHomeItemText),
+      ],
+    );
+  }
+
+  Column _listItemFirstSeen(index) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(Strings.firstSeenInLabel, style: AppTextStyle.listHomeItemLabel),
+        Text(allCharacters[index].firstLocation, style: AppTextStyle.listHomeItemText)
+      ],
+    );
+  }
+
 }
