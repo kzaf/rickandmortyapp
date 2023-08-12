@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:rickandmortyapp/constants/dimensions.dart';
 import 'package:rickandmortyapp/ui/ui_model/home_list_item.dart';
 import 'package:rickandmortyapp/ui/pages/details_page.dart';
-import 'package:rickandmortyapp/ui/widgets/loading_indicator.dart';
 
 import '../../constants/strings.dart';
 import '../../constants/styles.dart';
@@ -24,24 +23,28 @@ class HomePageListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      physics: const BouncingScrollPhysics(),
       key: const PageStorageKey(0),
       controller: scrollController,
       itemCount: allCharacters.length + 1,
       itemBuilder: (context, index) {
-        return 
-        nextPageUrl != null
-          ? index >= allCharacters.length
-              ? Padding(
+        if (nextPageUrl != null) {
+          if (index >= allCharacters.length) {
+            return Padding(
                 padding: EdgeInsets.all(Dimensions.homePageListItemLoaderPadding),
-                child: const LoadingIndicator(),
-              )
-              : _buildDataListItem(context, index)
-          : const SizedBox();
+                child: const Center(child: CircularProgressIndicator()),
+              );
+          } else {
+            return _buildListItem(context, index);
+          }
+        } else {
+          return const SizedBox();
+        }
       },
     );
   }
 
-  Card _buildDataListItem(context, index) {
+  Card _buildListItem(context, index) {
     return Card(
       margin: EdgeInsets.only(
         left: Dimensions.homePageListItemCardMargin,

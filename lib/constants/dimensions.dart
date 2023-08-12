@@ -10,6 +10,5 @@ class Dimensions {
   static double homePageListItemCardStatusDecorationBorderRadius = 8.0;
 
   static double detailsPageTitleMargin = 50.0;
-  static double detailsPageStatusSizedBoxWidth = 5.0;
   static double detailsPageStatusDecorationBorderRadius = 8.0;
 }
