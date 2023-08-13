@@ -6,7 +6,6 @@ sealed class CharactersBlocState extends Equatable {
 
   @override
   List<Object> get props => [];
-  
 }
 
 final class CharactersBlocInitial extends CharactersBlocState {}

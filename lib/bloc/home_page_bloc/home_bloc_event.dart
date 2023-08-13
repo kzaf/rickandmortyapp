@@ -1,7 +1,7 @@
 part of 'home_bloc.dart';
 
 @immutable
-sealed class CharactersBlocEvent extends Equatable{
+sealed class CharactersBlocEvent extends Equatable {
   const CharactersBlocEvent();
 
   @override

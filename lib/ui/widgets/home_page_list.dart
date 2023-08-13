@@ -17,7 +17,7 @@ class HomePageListView extends StatelessWidget {
     required this.allCharacters,
     required this.scrollController,
     required this.showLoader,
-    required this.nextPageUrl
+    required this.nextPageUrl,
   });
 
   @override
@@ -31,11 +31,18 @@ class HomePageListView extends StatelessWidget {
         if (nextPageUrl != null) {
           if (index >= allCharacters.length) {
             return Padding(
-                padding: EdgeInsets.all(Dimensions.homePageListItemLoaderPadding),
-                child: const Center(child: CircularProgressIndicator()),
-              );
+              padding: EdgeInsets.all(
+                Dimensions.homePageListItemLoaderPadding,
+              ),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
           } else {
-            return _buildListItem(context, index);
+            return _buildListItem(
+              context,
+              index,
+            );
           }
         } else {
           return const SizedBox();
@@ -44,72 +51,94 @@ class HomePageListView extends StatelessWidget {
     );
   }
 
-  Card _buildListItem(context, index) {
+  _buildListItem(context, index) {
     return Card(
       margin: EdgeInsets.only(
         left: Dimensions.homePageListItemCardMargin,
         right: Dimensions.homePageListItemCardMargin,
-        top: Dimensions.homePageListItemCardMargin
+        top: Dimensions.homePageListItemCardMargin,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Dimensions.homePageListItemCardRadius),
+        borderRadius:
+            BorderRadius.circular(Dimensions.homePageListItemCardRadius),
       ),
       child: InkWell(
         onTap: () {
           Navigator.push(
-            context, 
+            context,
             MaterialPageRoute(
-              builder: (BuildContext context) => DetailsPage(index: index, name: allCharacters[index].name)
-            )
+              builder: (BuildContext context) => DetailsPage(
+                index: index,
+                name: allCharacters[index].name,
+              ),
+            ),
           );
         },
         child: Row(
-          children: <Widget> [
+          children: <Widget>[
             _listItemImage(index),
-            SizedBox(width: Dimensions.homePageListItemSizedBoxHeight),
+            SizedBox(
+              width: Dimensions.homePageListItemSizedBoxHeight,
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _listItemNameAndStatus(index),
-                SizedBox(height: Dimensions.homePageListItemSizedBoxHeight),
-
+                SizedBox(
+                  height: Dimensions.homePageListItemSizedBoxHeight,
+                ),
                 _listItemLastLocation(index),
-                SizedBox(height: Dimensions.homePageListItemSizedBoxHeight),
-
+                SizedBox(
+                  height: Dimensions.homePageListItemSizedBoxHeight,
+                ),
                 _listItemFirstSeen(index),
-                SizedBox(height: Dimensions.homePageListItemSizedBoxHeight),
+                SizedBox(
+                  height: Dimensions.homePageListItemSizedBoxHeight,
+                ),
               ],
             ),
           ],
         ),
-      )
+      ),
     );
   }
 
-  Column _listItemImage(index) {
+  _listItemImage(index) {
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         ClipRRect(
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(Dimensions.homePageListItemCardIconRadius), 
-            bottomLeft: Radius.circular(Dimensions.homePageListItemCardIconRadius)
+            topLeft: Radius.circular(
+              Dimensions.homePageListItemCardIconRadius,
+            ),
+            bottomLeft: Radius.circular(
+              Dimensions.homePageListItemCardIconRadius,
+            ),
           ),
           child: Image.network(
             allCharacters[index].image,
-            width: Dimensions.homePageListItemCardIconSize, 
-            height: Dimensions.homePageListItemCardIconSize
+            width: Dimensions.homePageListItemCardIconSize,
+            height: Dimensions.homePageListItemCardIconSize,
           ),
         ),
       ],
     );
   }
 
-  Column _listItemNameAndStatus(index) {
+  _listItemNameAndStatus(index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(allCharacters[index].name, style: AppTextStyle.listHomeItemTitle),
+        SizedBox(
+          width: Dimensions.homePageListItemNameWidth,
+          child: Text(
+            allCharacters[index].name,
+            style: AppTextStyle.listHomeItemTitle,
+            softWrap: false,
+            overflow: TextOverflow.fade,
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -117,7 +146,9 @@ class HomePageListView extends StatelessWidget {
               height: Dimensions.homePageListItemSize,
               width: Dimensions.homePageListItemSize,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(Dimensions.homePageListItemCardStatusDecorationBorderRadius),
+                borderRadius: BorderRadius.circular(
+                  Dimensions.homePageListItemCardStatusDecorationBorderRadius,
+                ),
                 color: allCharacters[index].status == Strings.aliveStatus
                     ? Colors.green
                     : allCharacters[index].status == Strings.deadStatus
@@ -125,32 +156,48 @@ class HomePageListView extends StatelessWidget {
                         : Colors.grey,
               ),
             ),
-            SizedBox(width: Dimensions.homePageListItemSizedBoxWidth),
-            Text("${allCharacters[index].status.capitalize()} - ${allCharacters[index].species}", style: AppTextStyle.listHomeItemText),
+            SizedBox(
+              width: Dimensions.homePageListItemSizedBoxWidth,
+            ),
+            Text(
+              "${allCharacters[index].status.capitalize()} - ${allCharacters[index].species}",
+              style: AppTextStyle.listHomeItemText,
+            ),
           ],
         ),
       ],
     );
   }
 
-  Column _listItemLastLocation(index) {
+  _listItemLastLocation(index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(Strings.lastKnownLocationLabel, style: AppTextStyle.listHomeItemLabel),
-        Text(allCharacters[index].lastLocation, style: AppTextStyle.listHomeItemText),
+        Text(
+          Strings.lastKnownLocationLabel,
+          style: AppTextStyle.listHomeItemLabel,
+        ),
+        Text(
+          allCharacters[index].lastLocation,
+          style: AppTextStyle.listHomeItemText,
+        ),
       ],
     );
   }
 
-  Column _listItemFirstSeen(index) {
+  _listItemFirstSeen(index) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(Strings.firstSeenInLabel, style: AppTextStyle.listHomeItemLabel),
-        Text(allCharacters[index].firstLocation, style: AppTextStyle.listHomeItemText)
+        Text(
+          Strings.firstSeenInLabel,
+          style: AppTextStyle.listHomeItemLabel,
+        ),
+        Text(
+          allCharacters[index].firstLocation,
+          style: AppTextStyle.listHomeItemText,
+        ),
       ],
     );
   }
-
 }

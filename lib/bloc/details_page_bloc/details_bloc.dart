@@ -19,23 +19,24 @@ class DetailsBloc extends Bloc<DetailsBlocEvent, DetailsBlocState> {
       try {
         emit(DetailsBlocLoading());
 
-        final DetailsCharacter fetchedCharacterDetails = await apiRepository.fetchDetails(event.id);
-        DetailsItem detailsItems = 
-          DetailsItem(
+        final DetailsCharacter fetchedCharacterDetails =
+            await apiRepository.fetchDetails(event.id);
+        DetailsItem detailsItems = DetailsItem(
             name: fetchedCharacterDetails.name ?? Strings.unknown,
             status: fetchedCharacterDetails.status ?? Strings.unknown,
             species: fetchedCharacterDetails.species ?? Strings.unknown,
             type: fetchedCharacterDetails.type ?? Strings.unknown,
             gender: fetchedCharacterDetails.gender ?? Strings.unknown,
             originName: fetchedCharacterDetails.origin?.name ?? Strings.unknown,
-            locationName: fetchedCharacterDetails.location?.name ?? Strings.unknown,
+            locationName:
+                fetchedCharacterDetails.location?.name ?? Strings.unknown,
             image: fetchedCharacterDetails.image ?? Strings.imageNotFound,
-            episodes: fetchedCharacterDetails.episode ?? []
-        );
+            episodes: fetchedCharacterDetails.episode ?? []);
 
         List<String> updatedEpisodes = await Future.wait(
           detailsItems.episodes.map((episode) async {
-            final Episode episodeName = await apiRepository.fetchEpisodeDetails(episode);
+            final Episode episodeName =
+                await apiRepository.fetchEpisodeDetails(episode);
             return episodeName.name ?? Strings.unknown;
           }),
         );
@@ -44,13 +45,12 @@ class DetailsBloc extends Bloc<DetailsBlocEvent, DetailsBlocState> {
         emit(DetailsBlocLoaded(detailsItems));
 
         if (fetchedCharacterDetails.error != null) {
-          emit(DetailsBlocError(fetchedCharacterDetails.error ?? Strings.genericErrorMessage));
+          emit(DetailsBlocError(
+              fetchedCharacterDetails.error ?? Strings.genericErrorMessage));
         }
-
       } on NetworkError {
         emit(DetailsBlocError(Strings.fetchErrorMessage));
       }
     });
-    
   }
 }

@@ -18,38 +18,42 @@ class CharactersBloc extends Bloc<CharactersBlocEvent, CharactersBlocState> {
     on<GetAllCharactersList>((event, emit) async {
       try {
         emit(CharactersBlocLoading());
-        
-        final AllCharacters fetchedCharacters = await apiRepository.fetchCharacters(event.nextPageUrl);
-        List<HomeListItem>? homeListItems = fetchedCharacters.results?.map((character) {
-          return HomeListItem(
-            name: character.name ?? Strings.unknown,
-            status: character.status ?? Strings.unknown,
-            species: character.species ?? Strings.unknown,
-            lastLocation: character.location?.name ?? Strings.unknown,
-            firstLocation: character.episode?.first ?? Strings.unknown,
-            image: character.image ?? Strings.imageNotFound,
-          );
-        }).toList() ?? [];
 
-        for(var homeListItem in homeListItems) {
-          final Episode episode = await apiRepository.fetchEpisodeDetails(homeListItem.firstLocation);
+        final AllCharacters fetchedCharacters =
+            await apiRepository.fetchCharacters(event.nextPageUrl);
+        List<HomeListItem>? homeListItems =
+            fetchedCharacters.results?.map((character) {
+                  return HomeListItem(
+                    name: character.name ?? Strings.unknown,
+                    status: character.status ?? Strings.unknown,
+                    species: character.species ?? Strings.unknown,
+                    lastLocation: character.location?.name ?? Strings.unknown,
+                    firstLocation: character.episode?.first ?? Strings.unknown,
+                    image: character.image ?? Strings.imageNotFound,
+                  );
+                }).toList() ??
+                [];
+
+        for (var homeListItem in homeListItems) {
+          final Episode episode = await apiRepository
+              .fetchEpisodeDetails(homeListItem.firstLocation);
           homeListItem.firstLocation = episode.name ?? Strings.unknown;
         }
 
-        if(fetchedCharacters.results != null) {
+        if (fetchedCharacters.results != null) {
           event.existingList.addAll(homeListItems);
         }
-        
-        emit(CharactersBlocLoaded(event.existingList, fetchedCharacters.info?.next));
+
+        emit(CharactersBlocLoaded(
+            event.existingList, fetchedCharacters.info?.next));
 
         if (fetchedCharacters.error != null) {
-          emit(CharactersBlocError(fetchedCharacters.error ?? Strings.genericErrorMessage));
+          emit(CharactersBlocError(
+              fetchedCharacters.error ?? Strings.genericErrorMessage));
         }
-
       } on NetworkError {
         emit(CharactersBlocError(Strings.fetchErrorMessage));
       }
     });
-    
   }
 }

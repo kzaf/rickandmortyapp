@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rickandmortyapp/bloc/details_page_bloc/details_bloc.dart';
 
+import '../../constants/dimensions.dart';
 import '../../constants/strings.dart';
 import '../../constants/styles.dart';
 
@@ -30,25 +31,40 @@ class _DetailsPageState extends State<DetailsPage> {
     return Scaffold(
       body: BlocProvider(
         create: (context) => _detailsBloc,
-        child: BlocConsumer<DetailsBloc, DetailsBlocState> (
+        child: BlocConsumer<DetailsBloc, DetailsBlocState>(
           listener: (context, state) {
             if (state is DetailsBlocError) {
-              Center(child: Text(state.message));
+              Center(
+                child: Expanded(
+                  child: Text(
+                    state.message,
+                    style: AppTextStyle.textStyle,
+                    softWrap: false,
+                    overflow: TextOverflow.fade,
+                  ),
+                ),
+              );
             }
           },
           builder: (context, state) {
             if (state is DetailsBlocInitial) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             } else if (state is DetailsBlocLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             } else if (state is DetailsBlocLoaded) {
               return _buildDetailsPage(state);
             } else {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
           },
-        )
-      )
+        ),
+      ),
     );
   }
 
@@ -66,130 +82,141 @@ class _DetailsPageState extends State<DetailsPage> {
           flexibleSpace: FlexibleSpaceBar(
             background: Image.network(
               state.characterDetails.image,
-              fit: BoxFit.cover
+              fit: BoxFit.cover,
             ),
           ),
         ),
-        SliverAppBar(
-          automaticallyImplyLeading: false,
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
-          pinned: true,
-          bottom: const PreferredSize(preferredSize: Size.fromHeight(-10.0), child: SizedBox()),
-          flexibleSpace: Center(child: Text(state.characterDetails.name, style: AppTextStyle.headlineDetails))
+        SliverPadding(
+          padding: EdgeInsets.all(10.0),
+          sliver: SliverAppBar(
+            shape: ContinuousRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(30),
+              ),
+            ),
+            automaticallyImplyLeading: false,
+            pinned: true,
+            bottom: const PreferredSize(
+              preferredSize: Size.fromHeight(50),
+              child: SizedBox(),
+            ),
+            flexibleSpace: Center(
+              child: Text(
+                state.characterDetails.name,
+                style: AppTextStyle.headlineDetails,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
         ),
         SliverToBoxAdapter(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
-              Container(
-                width: MediaQuery.of(context).size.width - 10,
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Column(
-                    children: [
-                      Text('Status', style: AppTextStyle.captionDetails),
-                      Text(state.characterDetails.status.capitalize(), style: AppTextStyle.titleDetails),
-                    ],
-                  ),
-                ),
+              _buildCard(
+                'Status',
+                state.characterDetails.status.capitalize(),
               ),
-
-              Container(
-                width: MediaQuery.of(context).size.width - 10,
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Column(
-                    children: [
-                      Text('Gender', style: AppTextStyle.captionDetails),
-                      Text(state.characterDetails.gender, style: AppTextStyle.titleDetails),
-                    ],
-                  ),
-                ),
+              _buildCard(
+                'Gender',
+                state.characterDetails.gender,
               ),
-
-              Container(
-                width: MediaQuery.of(context).size.width - 10,
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Column(
-                    children: [
-                      Text('Species', style: AppTextStyle.captionDetails),
-                      Text(state.characterDetails.species, style: AppTextStyle.titleDetails),
-                    ],
-                  ),
-                ),
+              _buildCard(
+                'Species',
+                state.characterDetails.species,
               ),
-
-              Container(
-                width: MediaQuery.of(context).size.width - 10,
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Column(
-                    children: [
-                      Text('Last known location', style: AppTextStyle.captionDetails),
-                      Text(state.characterDetails.locationName, style: AppTextStyle.titleDetails),
-                    ],
-                  ),
-                ),
+              _buildCard(
+                'Last known location',
+                state.characterDetails.locationName,
               ),
-
-              Container(
-                width: MediaQuery.of(context).size.width - 10,
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Column(
-                    children: [
-                      Text('Origin', style: AppTextStyle.captionDetails),
-                      Text(state.characterDetails.originName, style: AppTextStyle.titleDetails),
-                    ],
-                  ),
-                ),
+              _buildCard(
+                'Origin',
+                state.characterDetails.originName,
               ),
-
-              Container(
-                width: MediaQuery.of(context).size.width - 10,
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Column(
-                    children: [
-                      Text('Number of episodes', style: AppTextStyle.captionDetails),
-                      Text('${state.characterDetails.episodes.length}', style: AppTextStyle.titleDetails),
-                    ],
-                  ),
-                ),
+              _buildCard(
+                'Number of episodes',
+                state.characterDetails.episodes.length.toString(),
               ),
-
-              Container(
-                width: MediaQuery.of(context).size.width - 10,
-                padding: const EdgeInsets.all(8.0),
-                child: Card(
-                  child: Column(
-                    children: [
-                      ExpansionTile(
-                        title: Text('Episodes'),
-                        children: state.characterDetails.episodes.map((item) {
-                          return ListTile(
-                            title: Text(item),
-                          );
-                        }).toList(),
-                      )
-                    ],
-                  ),
-                ),
+              _buildExpansionTile(
+                'Episodes',
+                state,
               ),
-              
-              
             ],
           ),
-        )
+        ),
       ],
+    );
+  }
 
+  _buildExpansionTile(title, state) {
+    return Container(
+      width: MediaQuery.of(context).size.width - 10,
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        elevation: 50,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            Dimensions.detailsPageCardRadius,
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: ExpansionTile(
+            shape: const Border(),
+            title: Text(title),
+            children: state.characterDetails.episodes.map<Widget>((item) {
+              return ListTile(
+                title: Expanded(
+                  child: Text(
+                    item,
+                    style: AppTextStyle.textStyle,
+                    softWrap: false,
+                    overflow: TextOverflow.fade,
+                  ),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
 
-
-      
+  _buildCard(title, text) {
+    return Container(
+      width: MediaQuery.of(context).size.width - 10,
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(
+            Dimensions.detailsPageCardRadius,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(30.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
+                  title + ':',
+                  style: AppTextStyle.titleStyle,
+                ),
+              ),
+              Expanded(
+                child: Text(
+                  text,
+                  style: AppTextStyle.textStyle,
+                  softWrap: false,
+                  overflow: TextOverflow.fade,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
