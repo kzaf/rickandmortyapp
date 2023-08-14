@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:rickandmortyapp/api/api_repository.dart';
 import 'package:rickandmortyapp/api/model/all_characters.dart';
-import 'package:rickandmortyapp/ui/ui_model/home_list_item.dart';
+import 'package:rickandmortyapp/ui/home_page/ui_model/home_list_item.dart';
 
 import '../../constants/strings.dart';
 import '../../api/model/episode.dart';

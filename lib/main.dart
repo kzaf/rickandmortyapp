@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rickandmortyapp/ui/pages/home_page.dart';
+import 'package:rickandmortyapp/ui/home_page/pages/home_page.dart';
 
 import 'constants/strings.dart';
 

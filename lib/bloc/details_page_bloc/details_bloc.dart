@@ -6,7 +6,7 @@ import 'package:rickandmortyapp/api/api_repository.dart';
 import '../../api/model/episode.dart';
 import '../../constants/strings.dart';
 import '../../api/model/details_character.dart';
-import '../../ui/ui_model/details_page_item.dart';
+import '../../ui/details_page/ui_model/details_page_item.dart';
 
 part 'details_bloc_event.dart';
 part 'details_bloc_state.dart';

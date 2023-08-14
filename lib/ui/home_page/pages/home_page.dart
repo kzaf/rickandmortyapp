@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rickandmortyapp/ui/ui_model/home_list_item.dart';
-import 'package:rickandmortyapp/ui/widgets/home_page_list.dart';
+import 'package:rickandmortyapp/ui/home_page/ui_model/home_list_item.dart';
+import 'package:rickandmortyapp/ui/home_page/widgets/home_page_list_item.dart';
 
-import '../../bloc/home_page_bloc/home_bloc.dart';
-import '../../constants/strings.dart';
+import '../../../bloc/home_page_bloc/home_bloc.dart';
+import '../../../constants/dimensions.dart';
+import '../../../constants/strings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -80,7 +81,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  void _handleNextPage() {
+  _handleNextPage() {
     _scrollController.addListener(() async {
       if (_scrollController.position.maxScrollExtent ==
           _scrollController.position.pixels) {
@@ -96,12 +97,33 @@ class HomePageState extends State<HomePage> {
     });
   }
 
-  HomePageListView _buildAllCharactersList(allCharacters, showLoader) {
-    return HomePageListView(
-      allCharacters: allCharacters,
-      scrollController: _scrollController,
-      showLoader: showLoader,
-      nextPageUrl: _nextPageUrl,
+  _buildAllCharactersList(allCharacters, showLoader) {
+    return ListView.builder(
+      physics: const BouncingScrollPhysics(),
+      key: const PageStorageKey(0),
+      controller: _scrollController,
+      itemCount: allCharacters.length + 1,
+      itemBuilder: (context, index) {
+        if (_nextPageUrl != null) {
+          if (index >= allCharacters.length) {
+            return Padding(
+              padding: EdgeInsets.all(
+                Dimensions.homePageListItemLoaderPadding,
+              ),
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            );
+          } else {
+            return HomePageListItem(
+              allCharacters: allCharacters,
+              index: index,
+            );
+          }
+        } else {
+          return const SizedBox();
+        }
+      },
     );
   }
 }
