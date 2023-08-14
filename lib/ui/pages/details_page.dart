@@ -68,16 +68,16 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  CustomScrollView _buildDetailsPage(DetailsBlocLoaded state) {
+  _buildDetailsPage(DetailsBlocLoaded state) {
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [
         SliverAppBar(
+          automaticallyImplyLeading: true,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          elevation: 0,
           pinned: true,
           centerTitle: false,
-          expandedHeight: 300.0,
+          expandedHeight: Dimensions.detailsPageImageExpandedHeight,
           stretch: true,
           flexibleSpace: FlexibleSpaceBar(
             background: Image.network(
@@ -87,18 +87,24 @@ class _DetailsPageState extends State<DetailsPage> {
           ),
         ),
         SliverPadding(
-          padding: EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(
+            Dimensions.detailsPageTitlePadding,
+          ),
           sliver: SliverAppBar(
             shape: ContinuousRectangleBorder(
               borderRadius: BorderRadius.all(
-                Radius.circular(30),
+                Radius.circular(
+                  Dimensions.detailsPageTitleBorderRadius,
+                ),
               ),
             ),
             automaticallyImplyLeading: false,
             pinned: true,
-            bottom: const PreferredSize(
-              preferredSize: Size.fromHeight(50),
-              child: SizedBox(),
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight(
+                Dimensions.detailsPageTitleBottomHeight,
+              ),
+              child: const SizedBox(),
             ),
             flexibleSpace: Center(
               child: Text(
@@ -115,31 +121,37 @@ class _DetailsPageState extends State<DetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               _buildCard(
-                'Status',
+                Strings.detailsPageLabelStatus,
                 state.characterDetails.status.capitalize(),
+                'icons/status.png',
               ),
               _buildCard(
-                'Gender',
+                Strings.detailsPageLabelGender,
                 state.characterDetails.gender,
+                'icons/gender.png',
               ),
               _buildCard(
-                'Species',
+                Strings.detailsPageLabelSpecies,
                 state.characterDetails.species,
+                'icons/species.png',
               ),
               _buildCard(
-                'Last known location',
+                Strings.detailsPageLabelLastKnownLocation,
                 state.characterDetails.locationName,
+                'icons/location.png',
               ),
               _buildCard(
-                'Origin',
+                Strings.detailsPageLabelOrigin,
                 state.characterDetails.originName,
+                'icons/origin.png',
               ),
               _buildCard(
-                'Number of episodes',
+                Strings.detailsPageLabelNumberOfEpisodes,
                 state.characterDetails.episodes.length.toString(),
+                'icons/number_of_episodes.png',
               ),
               _buildExpansionTile(
-                'Episodes',
+                Strings.detailsPageLabelEpisodes,
                 state,
               ),
             ],
@@ -150,21 +162,30 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   _buildExpansionTile(title, state) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width - 10,
-      padding: const EdgeInsets.all(8.0),
       child: Card(
-        elevation: 50,
+        elevation: Dimensions.detailsPageExpansionTileElevation,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             Dimensions.detailsPageCardRadius,
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(
+            Dimensions.detailsPageExpansionTilePadding,
+          ),
           child: ExpansionTile(
+            leading: Image.asset(
+              'icons/episodes.png',
+            ),
             shape: const Border(),
-            title: Text(title),
+            title: Text(
+              title,
+              style: AppTextStyle.titleStyle,
+              softWrap: false,
+              overflow: TextOverflow.fade,
+            ),
             children: state.characterDetails.episodes.map<Widget>((item) {
               return ListTile(
                 title: Expanded(
@@ -183,34 +204,38 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  _buildCard(title, text) {
-    return Container(
+  _buildCard(title, text, image) {
+    return SizedBox(
       width: MediaQuery.of(context).size.width - 10,
-      padding: const EdgeInsets.all(8.0),
       child: Card(
-        elevation: 10,
+        elevation: Dimensions.detailsPageCardElevation,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             Dimensions.detailsPageCardRadius,
           ),
         ),
         child: Padding(
-          padding: EdgeInsets.all(30.0),
+          padding: EdgeInsets.all(
+            Dimensions.detailsPageCardPadding,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Expanded(
-                child: Text(
-                  title + ':',
-                  style: AppTextStyle.titleStyle,
-                ),
-              ),
-              Expanded(
-                child: Text(
-                  text,
-                  style: AppTextStyle.textStyle,
-                  softWrap: false,
-                  overflow: TextOverflow.fade,
+                child: ListTile(
+                  leading: Image.asset(
+                    image,
+                  ),
+                  title: Text(
+                    title,
+                    style: AppTextStyle.titleStyle,
+                  ),
+                  subtitle: Text(
+                    text.toString().capitalize(),
+                    style: AppTextStyle.textStyle,
+                    softWrap: false,
+                    overflow: TextOverflow.fade,
+                  ),
                 ),
               ),
             ],

@@ -28,13 +28,13 @@ class AppTextStyle {
 
   static const TextStyle titleStyle = TextStyle(
     fontFamily: 'Roboto Slab',
-    fontSize: 17,
-    fontWeight: FontWeight.normal,
+    fontSize: 24,
+    fontWeight: FontWeight.bold,
   );
 
   static const TextStyle textStyle = TextStyle(
     fontFamily: 'Roboto Slab',
-    fontSize: 15,
+    fontSize: 18,
     fontWeight: FontWeight.normal,
   );
 }

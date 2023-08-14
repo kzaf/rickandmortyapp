@@ -22,8 +22,12 @@ class HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _charactersBloc
-        .add(GetAllCharactersList(_existingCharactersList, _nextPageUrl));
+    _charactersBloc.add(
+      GetAllCharactersList(
+        _existingCharactersList,
+        _nextPageUrl,
+      ),
+    );
     _handleNextPage();
     super.initState();
   }

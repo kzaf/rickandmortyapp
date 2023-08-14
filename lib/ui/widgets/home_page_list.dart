@@ -59,8 +59,9 @@ class HomePageListView extends StatelessWidget {
         top: Dimensions.homePageListItemCardMargin,
       ),
       shape: RoundedRectangleBorder(
-        borderRadius:
-            BorderRadius.circular(Dimensions.homePageListItemCardRadius),
+        borderRadius: BorderRadius.circular(
+          Dimensions.homePageListItemCardRadius,
+        ),
       ),
       child: InkWell(
         onTap: () {
@@ -174,7 +175,7 @@ class HomePageListView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          Strings.lastKnownLocationLabel,
+          Strings.homePageLastKnownLocationLabel,
           style: AppTextStyle.listHomeItemLabel,
         ),
         Text(
@@ -190,7 +191,7 @@ class HomePageListView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          Strings.firstSeenInLabel,
+          Strings.homePageFirstSeenInLabel,
           style: AppTextStyle.listHomeItemLabel,
         ),
         Text(
