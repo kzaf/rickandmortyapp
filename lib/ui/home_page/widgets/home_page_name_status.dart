@@ -39,9 +39,11 @@ class HomePageNameStatus extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                   Dimensions.homePageListItemCardStatusDecorationBorderRadius,
                 ),
-                color: allCharacters[index].status == Strings.aliveStatus
+                color: allCharacters[index].status.toLowerCase() ==
+                        Strings.aliveStatus.toLowerCase()
                     ? Colors.green
-                    : allCharacters[index].status == Strings.deadStatus
+                    : allCharacters[index].status.toLowerCase() ==
+                            Strings.deadStatus.toLowerCase()
                         ? Colors.red
                         : Colors.grey,
               ),

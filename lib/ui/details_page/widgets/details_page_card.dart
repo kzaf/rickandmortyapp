@@ -47,7 +47,9 @@ class DetailsPageCard extends StatelessWidget {
                   ),
                   subtitle: Text(
                     text.toString().capitalize(),
-                    style: AppTextStyle.textStyle,
+                    style: AppTextStyle.textStyle.copyWith(
+                      color: _getColorForSubtitle(text),
+                    ),
                     softWrap: false,
                     overflow: TextOverflow.fade,
                   ),
@@ -58,5 +60,19 @@ class DetailsPageCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Color _getColorForSubtitle(String subtitle) {
+    if (subtitle.toLowerCase() == Strings.aliveStatus.toLowerCase()) {
+      return Colors.green;
+    } else if (subtitle.toLowerCase() == Strings.deadStatus.toLowerCase()) {
+      return Colors.red;
+    } else if (subtitle.toLowerCase() == Strings.femaleStatus.toLowerCase()) {
+      return Colors.pink.shade200;
+    } else if (subtitle.toLowerCase() == Strings.maleStatus.toLowerCase()) {
+      return Colors.blue.shade200;
+    } else {
+      return AppTextStyle.textStyle.color ?? Colors.grey;
+    }
   }
 }

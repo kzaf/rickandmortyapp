@@ -18,12 +18,11 @@ class HomePageState extends State<HomePage> {
   final _charactersBloc = CharactersBloc();
   final _scrollController = ScrollController();
   List<HomeListItem> _existingCharactersList = [];
-  String? _nextPageUrl;
+  String? _nextPageUrl = Strings.emptyString;
   bool _shouldLoadNext = true;
 
   @override
   void initState() {
-    _nextPageUrl = Strings.emptyString;
     _charactersBloc
         .add(GetAllCharactersList(_existingCharactersList, _nextPageUrl));
     _handleNextPage();
@@ -102,10 +101,12 @@ class HomePageState extends State<HomePage> {
     _scrollController.addListener(
       () async {
         if (_scrollController.position.maxScrollExtent ==
-                _scrollController.position.pixels &&
-            _shouldLoadNext) {
-          _charactersBloc.add(
-              GetAllCharactersList(_existingCharactersList, _nextPageUrl!));
+            _scrollController.position.pixels) {
+          if (_shouldLoadNext) {
+            _charactersBloc.add(
+              GetAllCharactersList(_existingCharactersList, _nextPageUrl),
+            );
+          }
         }
       },
     );
