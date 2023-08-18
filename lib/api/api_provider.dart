@@ -10,16 +10,17 @@ class ApiProvider {
   Future<AllCharacters> fetchCharacters(String? nextPageUrl) async {
     try {
       String? urlNextPage = nextPageUrl;
-      if(urlNextPage != null) {
-        if(urlNextPage == "") {
-          Response response = await dio.get("${Strings.baseUrl}${Strings.charactersRoute}");
-          return AllCharacters.fromJson(response.data); 
+      if (urlNextPage != null) {
+        if (urlNextPage == "") {
+          Response response =
+              await dio.get("${Strings.baseUrl}${Strings.charactersRoute}");
+          return AllCharacters.fromJson(response.data);
         } else {
           Response response = await dio.get(urlNextPage);
           return AllCharacters.fromJson(response.data);
         }
       } else {
-        return AllCharacters.withError(Strings.connectionErrorMessage);
+        return AllCharacters.withError(Strings.fetchedAllMessage);
       }
     } catch (error) {
       return AllCharacters.withError(Strings.connectionErrorMessage);
@@ -28,8 +29,9 @@ class ApiProvider {
 
   Future<DetailsCharacter> fetchDetails(int id) async {
     try {
-      Response response = await dio.get("${"${Strings.baseUrl}${Strings.charactersRoute}"}$id");
-      return DetailsCharacter.fromJson(response.data); 
+      Response response =
+          await dio.get("${"${Strings.baseUrl}${Strings.charactersRoute}"}$id");
+      return DetailsCharacter.fromJson(response.data);
     } catch (error) {
       return DetailsCharacter.withError(Strings.connectionErrorMessage);
     }
@@ -38,10 +40,9 @@ class ApiProvider {
   Future<Episode> fetchEpisodeDetails(String url) async {
     try {
       Response response = await dio.get(url);
-      return Episode.fromJson(response.data); 
+      return Episode.fromJson(response.data);
     } catch (error) {
       return Episode.withError(Strings.connectionErrorMessage);
     }
   }
-
 }

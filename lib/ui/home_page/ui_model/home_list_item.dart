@@ -13,6 +13,5 @@ class HomeListItem {
     required this.lastLocation,
     required this.firstLocation,
     required this.image,
-    }
-  );
+  });
 }

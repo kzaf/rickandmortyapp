@@ -6,12 +6,13 @@ import 'api_provider.dart';
 class ApiRepository {
   final provider = ApiProvider();
 
-  Future<AllCharacters> fetchCharacters(String? nextPageUrl) => provider.fetchCharacters(nextPageUrl);
+  Future<AllCharacters> fetchCharacters(String? nextPageUrl) =>
+      provider.fetchCharacters(nextPageUrl);
 
   Future<DetailsCharacter> fetchDetails(int id) => provider.fetchDetails(id);
 
-  Future<Episode> fetchEpisodeDetails(String? url) => provider.fetchEpisodeDetails(url!);
-
+  Future<Episode> fetchEpisodeDetails(String? url) =>
+      provider.fetchEpisodeDetails(url!);
 }
 
 class NetworkError extends Error {}

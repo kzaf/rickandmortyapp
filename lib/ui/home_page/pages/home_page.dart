@@ -17,20 +17,23 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   final _charactersBloc = CharactersBloc();
   final _scrollController = ScrollController();
-  final List<HomeListItem> _existingCharactersList = [];
-  var _nextPageUrl = Strings.emptyString;
-  var _shouldLoadNext = true;
+  List<HomeListItem> _existingCharactersList = [];
+  String? _nextPageUrl;
+  bool _shouldLoadNext = true;
 
   @override
   void initState() {
-    _charactersBloc.add(
-      GetAllCharactersList(
-        _existingCharactersList,
-        _nextPageUrl,
-      ),
-    );
+    _nextPageUrl = Strings.emptyString;
+    _charactersBloc
+        .add(GetAllCharactersList(_existingCharactersList, _nextPageUrl));
     _handleNextPage();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _charactersBloc.close();
+    super.dispose();
   }
 
   @override
@@ -47,81 +50,62 @@ class HomePageState extends State<HomePage> {
             if (state is CharactersBlocError) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text(
-                    state.message,
-                  ),
+                  content: Text(state.message),
                 ),
               );
             }
           },
           builder: (context, state) {
             if (state is CharactersBlocInitial) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is CharactersBlocLoading) {
-              _shouldLoadNext = false;
-              return _buildAllCharactersList(
-                _existingCharactersList,
-                true,
-              );
-            } else if (state is CharactersBlocLoaded) {
-              _shouldLoadNext = true;
-              _nextPageUrl = state.nextPageUrl ?? Strings.emptyString;
-              return _buildAllCharactersList(
-                state.allCharacters,
-                false,
-              );
-            } else {
               return const Center(
                 child: CircularProgressIndicator(),
               );
+            } else if (state is CharactersBlocLoaded) {
+              _nextPageUrl = state.nextPageUrl;
+              _existingCharactersList = state.allCharacters;
+              _shouldLoadNext = _nextPageUrl != null;
             }
+            return _buildAllCharactersList(_existingCharactersList);
           },
         ),
       ),
     );
   }
 
-  _handleNextPage() {
-    _scrollController.addListener(() async {
-      if (_scrollController.position.maxScrollExtent ==
-          _scrollController.position.pixels) {
-        if (_shouldLoadNext) {
-          _charactersBloc.add(
-            GetAllCharactersList(
-              _existingCharactersList,
-              _nextPageUrl,
-            ),
-          );
-        }
-      }
-    });
-  }
-
-  _buildAllCharactersList(allCharacters, showLoader) {
+  ListView _buildAllCharactersList(List<HomeListItem> allCharacters) {
     return ListView.builder(
       physics: const BouncingScrollPhysics(),
       key: const PageStorageKey(0),
       controller: _scrollController,
-      itemCount: allCharacters.length + 1,
+      itemCount: allCharacters.length + (_shouldLoadNext ? 1 : 0),
       itemBuilder: (context, index) {
-        if (_nextPageUrl != null) {
-          if (index >= allCharacters.length) {
-            return Padding(
-              padding: EdgeInsets.all(
-                Dimensions.homePageListItemLoaderPadding,
-              ),
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
-            );
-          } else {
-            return HomePageListItem(
-              allCharacters: allCharacters,
-              index: index,
-            );
-          }
+        if (index >= allCharacters.length) {
+          return Padding(
+            padding: EdgeInsets.all(
+              Dimensions.homePageListItemLoaderPadding,
+            ),
+            child: const Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         } else {
-          return const SizedBox();
+          return HomePageListItem(
+            allCharacters: allCharacters,
+            index: index,
+          );
+        }
+      },
+    );
+  }
+
+  void _handleNextPage() {
+    _scrollController.addListener(
+      () async {
+        if (_scrollController.position.maxScrollExtent ==
+                _scrollController.position.pixels &&
+            _shouldLoadNext) {
+          _charactersBloc.add(
+              GetAllCharactersList(_existingCharactersList, _nextPageUrl!));
         }
       },
     );

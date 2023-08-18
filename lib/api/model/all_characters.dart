@@ -91,8 +91,7 @@ class Results {
     species = json['species'];
     type = json['type'];
     gender = json['gender'];
-    origin =
-        json['origin'] != null ? Origin.fromJson(json['origin']) : null;
+    origin = json['origin'] != null ? Origin.fromJson(json['origin']) : null;
     location =
         json['location'] != null ? Origin.fromJson(json['location']) : null;
     image = json['image'];

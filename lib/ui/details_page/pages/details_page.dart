@@ -30,6 +30,12 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   @override
+  void dispose() {
+    _detailsBloc.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
@@ -71,7 +77,7 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  _buildDetailsPage(DetailsBlocLoaded state) {
+  CustomScrollView _buildDetailsPage(DetailsBlocLoaded state) {
     return CustomScrollView(
       physics: const BouncingScrollPhysics(),
       slivers: [

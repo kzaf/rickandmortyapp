@@ -24,7 +24,7 @@ class HomePageLastLocation extends StatelessWidget {
           style: AppTextStyle.listHomeItemLabel,
         ),
         Text(
-          allCharacters[index].lastLocation,
+          allCharacters[index].lastLocation.capitalize(),
           style: AppTextStyle.listHomeItemText,
         ),
       ],
