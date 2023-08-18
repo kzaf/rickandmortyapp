@@ -89,37 +89,31 @@ class _DetailsPageState extends State<DetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               DetailsPageCard(
-                context: context,
                 title: Strings.detailsPageLabelStatus,
                 text: state.characterDetails.status.capitalize(),
                 image: 'icons/status.png',
               ),
               DetailsPageCard(
-                context: context,
                 title: Strings.detailsPageLabelGender,
                 text: state.characterDetails.gender,
                 image: 'icons/gender.png',
               ),
               DetailsPageCard(
-                context: context,
                 title: Strings.detailsPageLabelSpecies,
                 text: state.characterDetails.species,
                 image: 'icons/species.png',
               ),
               DetailsPageCard(
-                context: context,
                 title: Strings.detailsPageLabelLastKnownLocation,
                 text: state.characterDetails.locationName,
                 image: 'icons/location.png',
               ),
               DetailsPageCard(
-                context: context,
                 title: Strings.detailsPageLabelOrigin,
                 text: state.characterDetails.originName,
                 image: 'icons/origin.png',
               ),
               DetailsPageCard(
-                context: context,
                 title: Strings.detailsPageLabelNumberOfEpisodes,
                 text: state.characterDetails.episodes.length.toString(),
                 image: 'icons/number_of_episodes.png',

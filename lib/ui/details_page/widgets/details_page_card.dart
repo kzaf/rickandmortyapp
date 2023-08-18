@@ -7,13 +7,11 @@ import '../../../constants/styles.dart';
 class DetailsPageCard extends StatelessWidget {
   const DetailsPageCard({
     super.key,
-    required this.context,
     required this.title,
     required this.text,
     required this.image,
   });
 
-  final BuildContext context;
   final String title;
   final String text;
   final String image;
