@@ -20,11 +20,13 @@ class HomePageState extends State<HomePage> {
   List<HomeListItem> _existingCharactersList = [];
   String? _nextPageUrl = Strings.emptyString;
   bool _shouldLoadNext = true;
+  bool _firstLoad = true;
 
   @override
   void initState() {
-    _charactersBloc
-        .add(GetAllCharactersList(_existingCharactersList, _nextPageUrl));
+    _charactersBloc.add(
+      GetAllCharactersList(_existingCharactersList, _nextPageUrl),
+    );
     _handleNextPage();
     super.initState();
   }
@@ -64,7 +66,14 @@ class HomePageState extends State<HomePage> {
               _existingCharactersList = state.allCharacters;
               _shouldLoadNext = _nextPageUrl != null;
             }
-            return _buildAllCharactersList(_existingCharactersList);
+            if (_firstLoad) {
+              _firstLoad = false;
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              return _buildAllCharactersList(_existingCharactersList);
+            }
           },
         ),
       ),
