@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rickandmortyapp/bloc/details_page_bloc/details_bloc.dart';
 import 'package:rickandmortyapp/ui/details_page/widgets/details_page_card.dart';
 
+import '../../../constants/dimensions.dart';
 import '../../../constants/strings.dart';
 import '../../../constants/styles.dart';
+import '../../common/progress_indicator.dart';
 import '../widgets/details_page_expansion_tile.dart';
 import '../widgets/details_page_image.dart';
 import '../widgets/details_page_name.dart';
@@ -56,21 +58,14 @@ class _DetailsPageState extends State<DetailsPage> {
             }
           },
           builder: (context, state) {
-            if (state is DetailsBlocInitial) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is DetailsBlocLoading) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (state is DetailsBlocLoaded) {
+            if (state is DetailsBlocLoaded) {
               return _buildDetailsPage(state);
-            } else {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
             }
+            return Center(
+              child: ProgressWithIcon(
+                size: Dimensions.progressIndicatorSizeBig,
+              ),
+            );
           },
         ),
       ),

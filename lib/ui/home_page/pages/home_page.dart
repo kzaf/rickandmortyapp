@@ -6,6 +6,7 @@ import 'package:rickandmortyapp/ui/home_page/widgets/home_page_list_item.dart';
 import '../../../bloc/home_page_bloc/home_bloc.dart';
 import '../../../constants/dimensions.dart';
 import '../../../constants/strings.dart';
+import '../../common/progress_indicator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -58,8 +59,10 @@ class HomePageState extends State<HomePage> {
           },
           builder: (context, state) {
             if (state is CharactersBlocInitial) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: ProgressWithIcon(
+                  size: Dimensions.progressIndicatorSizeBig,
+                ),
               );
             } else if (state is CharactersBlocLoaded) {
               _nextPageUrl = state.nextPageUrl;
@@ -68,8 +71,10 @@ class HomePageState extends State<HomePage> {
             }
             if (_firstLoad) {
               _firstLoad = false;
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Center(
+                child: ProgressWithIcon(
+                  size: Dimensions.progressIndicatorSizeBig,
+                ),
               );
             } else {
               return _buildAllCharactersList(_existingCharactersList);
@@ -92,8 +97,10 @@ class HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(
               Dimensions.homePageListItemLoaderPadding,
             ),
-            child: const Center(
-              child: CircularProgressIndicator(),
+            child: Center(
+              child: ProgressWithIcon(
+                size: Dimensions.progressIndicatorSizeSmall,
+              ),
             ),
           );
         } else {

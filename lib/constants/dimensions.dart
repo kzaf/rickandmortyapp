@@ -21,4 +21,7 @@ class Dimensions {
   static double detailsPageImageExpandedHeight = 500.0;
   static double detailsPageExpansionTilePadding = 20.0;
   static double detailsPageExpansionTileElevation = 50.0;
+
+  static double progressIndicatorSizeSmall = 50.0;
+  static double progressIndicatorSizeBig = 100.0;
 }
